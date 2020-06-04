@@ -1,0 +1,69 @@
+apply plugin: 'com.android.application'
+
+android {
+    signingConfigs {
+        release {
+            storeFile file('jenkins.jks')
+            storePassword 'jenkins'
+            keyAlias = 'jenkins'
+            keyPassword 'jenkins'
+        }
+    }
+    compileSdkVersion 28
+
+
+    defaultConfig {
+        applicationId "id.fanxiang.jenkins"
+        minSdkVersion 21
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        signingConfig signingConfigs.release
+
+    }
+
+    buildTypes {
+        /**
+         * 开发环境
+         */
+        debug {
+            //是否混淆,开发是选否
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            //对应服务器地址
+            buildConfigField  'String', 'buildTypes', '"debug"'
+        }
+
+        /**
+         * dev环境
+         */
+        dev {
+            //是否混淆,开发是选否
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            //对应服务器地址
+            buildConfigField  'String', 'buildTypes', '"dev"'
+        }
+        /**
+         * 正式环境
+         */
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            //对应服务器地址
+            buildConfigField  'String', 'buildTypes', '"release"'
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+}
